@@ -1,1105 +1,941 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kickoff | Run Your League Like A Pro</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        pitch: '#0A0A0A',
-                        lime: '#C8F135',
-                        field: '#F5F5F0',
-                        chalk: '#FFFFFF',
-                        muted: '#9A9A8A',
-                        card: '#141414',
-                    },
-                    fontFamily: {
-                        display: ['"Bebas Neue"', 'sans-serif'],
-                        body: ['"DM Sans"', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
-    <style>
-        * { font-family: 'DM Sans', sans-serif; }
-        .font-display { font-family: 'Bebas Neue', sans-serif; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+  <title>Kickoff · Run Your League Like A Pro</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            pitch: '#0A0A0A',
+            lime: '#C8F135',
+            field: '#F5F5F0',
+            chalk: '#FFFFFF',
+            muted: '#9A9A8A',
+            card: '#141414',
+          },
+          fontFamily: {
+            display: ['"Bebas Neue"', 'sans-serif'],
+            body: ['"DM Sans"', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    * { font-family: 'DM Sans', sans-serif; }
+    .font-display { font-family: 'Bebas Neue', sans-serif; }
+    body { background: #F5F5F0; color: #0A0A0A; }
+    html { scroll-behavior: smooth; }
 
-        body { background: #F5F5F0; color: #0A0A0A; }
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .ticker-inner { animation: ticker 28s linear infinite; display: flex; white-space: nowrap; }
+    .ticker-inner:hover { animation-play-state: paused; }
 
-        html { scroll-behavior: smooth; }
+    .glow-btn {
+      box-shadow: 0 0 0 0 rgba(200,241,53,0.5);
+      transition: box-shadow 0.3s ease, transform 0.2s ease;
+    }
+    .glow-btn:hover {
+      box-shadow: 0 0 40px 6px rgba(200,241,53,0.35);
+      transform: translateY(-2px);
+    }
 
-        /* Ticker */
-        @keyframes ticker {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .ticker-inner { animation: ticker 28s linear infinite; white-space: nowrap; display: flex; }
-        .ticker-inner:hover { animation-play-state: paused; }
+    .feature-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+    .feature-card:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(0,0,0,0.12); }
 
-        /* Glow CTA */
-        .glow-btn {
-            box-shadow: 0 0 0 0 rgba(200,241,53,0.5);
-            transition: box-shadow 0.3s ease, transform 0.2s ease;
-        }
-        .glow-btn:hover {
-            box-shadow: 0 0 40px 6px rgba(200,241,53,0.35);
-            transform: translateY(-2px);
-        }
+    .table-row { transition: background 0.15s; cursor: default; }
+    .table-row:hover { background: rgba(200,241,53,0.06); }
 
-        /* Card hover */
-        .feature-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
-        .feature-card:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(0,0,0,0.12); }
+    @keyframes borderPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(200,241,53,0.3); }
+      50% { box-shadow: 0 0 0 8px rgba(200,241,53,0.0); }
+    }
+    .pro-card { animation: borderPulse 3s ease infinite; }
 
-        /* Bracket connector */
-        .bracket-connector { position: relative; }
-        .bracket-connector::after {
-            content: '';
-            position: absolute;
-            right: -24px; top: 50%;
-            width: 24px; height: 2px;
-            background: #C8F135;
-        }
+    .nav-link { position: relative; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 2px;
+      background: #C8F135;
+      transition: width 0.2s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
 
-        /* Table row hover */
-        .table-row { transition: background 0.15s; cursor: default; }
-        .table-row:hover { background: rgba(200,241,53,0.06); }
+    input:focus { outline: none; box-shadow: 0 0 0 2px #C8F135; }
 
-        /* Pricing card active border pulse */
-        @keyframes borderPulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(200,241,53,0.3); }
-            50% { box-shadow: 0 0 0 8px rgba(200,241,53,0.0); }
-        }
-        .pro-card { animation: borderPulse 3s ease infinite; }
+    .step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 7rem;
+      line-height: 1;
+      color: rgba(200,241,53,0.12);
+      position: absolute;
+      top: -1rem;
+      left: -1rem;
+      pointer-events: none;
+      user-select: none;
+    }
 
-        /* Section divider slash */
-        .slash-divider {
-            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
-        }
-        .slash-divider-reverse {
-            clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 100%);
-        }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
 
-        /* Nav link underline */
-        .nav-link { position: relative; }
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -2px; left: 0;
-            width: 0; height: 2px;
-            background: #C8F135;
-            transition: width 0.2s ease;
-        }
-        .nav-link:hover::after { width: 100%; }
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: block; }
 
-        /* Form input focus */
-        input:focus { outline: none; box-shadow: 0 0 0 2px #C8F135; }
+    i { display: inline-flex; align-items: center; justify-content: center; }
+    .bracket-connector::after {
+      content: '';
+      position: absolute;
+      right: -24px; top: 50%;
+      width: 24px; height: 2px;
+      background: #C8F135;
+    }
 
-        /* Step number big */
-        .step-num {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 7rem;
-            line-height: 1;
-            color: rgba(200,241,53,0.12);
-            position: absolute;
-            top: -1rem;
-            left: -1rem;
-            pointer-events: none;
-            user-select: none;
-        }
+    /* MODAL OVERLAY */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 1.5rem;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-card {
+      background: #0A0A0A;
+      border: 1px solid rgba(200,241,53,0.25);
+      border-radius: 2rem;
+      max-width: 440px;
+      width: 100%;
+      padding: 2.5rem 2rem 2rem;
+      box-shadow: 0 32px 64px rgba(0,0,0,0.7);
+      text-align: center;
+      position: relative;
+      animation: modalPop 0.25s ease-out;
+    }
+    @keyframes modalPop {
+      0% { transform: scale(0.92); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .modal-icon {
+      background: rgba(200,241,53,0.12);
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 2.4rem;
+      color: #C8F135;
+    }
+    .modal-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.4rem;
+      color: white;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+    }
+    .modal-sub {
+      color: rgba(255,255,255,0.55);
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    .modal-buttons {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .modal-btn-primary {
+      background: #C8F135;
+      color: #0A0A0A;
+      font-weight: 700;
+      padding: 0.9rem 1.5rem;
+      border-radius: 60px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .modal-btn-primary:hover {
+      background: #d4ff4a;
+      transform: scale(1.02);
+    }
+    .modal-btn-primary:active { transform: scale(0.97); }
+    .modal-btn-secondary {
+      background: transparent;
+      color: rgba(255,255,255,0.5);
+      font-weight: 500;
+      padding: 0.7rem;
+      border: none;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: color 0.2s;
+      width: 100%;
+      border-radius: 40px;
+    }
+    .modal-btn-secondary:hover {
+      color: white;
+      background: rgba(255,255,255,0.05);
+    }
+    .modal-badge {
+      display: inline-block;
+      background: rgba(200,241,53,0.12);
+      color: #C8F135;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.25rem 0.9rem;
+      border-radius: 60px;
+      margin-bottom: 0.5rem;
+    }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #ddd; border-radius: 10px; }
-
-        /* Mobile menu */
-        #mobile-menu { display: none; }
-        #mobile-menu.open { display: block; }
-
-        /* Font Awesome icons */
-        i { display: inline-flex; align-items: center; justify-content: center; }
-        i.fa-sm { font-size: 0.875em; }
-        i.text-sm { font-size: 0.875rem; }
-        i.text-base { font-size: 1rem; }
-        i.text-lg { font-size: 1.125rem; }
-        i.text-xl { font-size: 1.25rem; }
-        i.text-2xl { font-size: 1.5rem; }
-    </style>
+    @media (max-width: 640px) {
+      .hero-title { font-size: 3.8rem; line-height: 0.9; }
+      .step-num { font-size: 4.5rem; top: -0.5rem; left: -0.5rem; }
+      .pro-card { margin: 0 0.5rem; }
+      .modal-card { padding: 2rem 1.5rem; }
+    }
+    @media (min-width: 768px) {
+      .hero-title { font-size: 7rem; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════
-     NAVIGATION
-═══════════════════════════════════════════════ -->
+<!-- NAVIGATION -->
 <nav class="fixed top-0 w-full z-50 bg-pitch/90 backdrop-blur-md border-b border-white/5">
-    <div class="max-w-7xl mx-auto px-6 md:px-10 py-4 flex justify-between items-center">
-        <!-- Logo -->
-        <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-lime rounded-lg flex items-center justify-center text-pitch text-lg">
-                <i class="fas fa-futbol "></i>
-            </div>
-            <span class="font-display text-2xl text-white tracking-widest">KICKOFF</span>
-        </div>
-
-        <!-- Desktop Links -->
-        <div class="hidden md:flex items-center gap-8">
-            <a href="#features" class="nav-link text-white/60 hover:text-white text-sm font-medium transition-colors">Features</a>
-            <a href="#standings" class="nav-link text-white/60 hover:text-white text-sm font-medium transition-colors">Standings</a>
-            <a href="#how-it-works" class="nav-link text-white/60 hover:text-white text-sm font-medium transition-colors">How It Works</a>
-            <a href="#pricing" class="nav-link text-white/60 hover:text-white text-sm font-medium transition-colors">Pricing</a>
-        </div>
-
-        <div class="flex items-center gap-3">
-            <a href="#download" class="hidden md:block bg-lime text-pitch px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-white transition-colors">
-                Download App
-            </a>
-            <!-- Mobile hamburger -->
-            <button onclick="document.getElementById('mobile-menu').classList.toggle('open')" class="md:hidden text-white p-2 text-xl">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
+  <div class="max-w-7xl mx-auto px-6 md:px-10 py-4 flex justify-between items-center">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-lime rounded-lg flex items-center justify-center text-pitch text-lg">
+        <i class="fas fa-futbol"></i>
+      </div>
+      <span class="font-display text-2xl text-white tracking-widest">KICKOFF</span>
     </div>
-    <!-- Mobile menu -->
-    <div id="mobile-menu" class="md:hidden bg-pitch border-t border-white/10 px-6 py-4 space-y-4">
-        <a href="#features" class="block text-white/70 font-medium">Features</a>
-        <a href="#standings" class="block text-white/70 font-medium">Standings</a>
-        <a href="#how-it-works" class="block text-white/70 font-medium">How It Works</a>
-        <a href="#pricing" class="block text-white/70 font-medium">Pricing</a>
-        <a href="#download" class="block bg-lime text-pitch text-center py-3 rounded-lg font-bold mt-2">Download App</a>
+
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#features" class="nav-link text-white/60 hover:text-white text-sm font-medium transition-colors">Features</a>
+      <a href="#standings" class="nav-link text-white/60 hover:text-white text-sm font-medium transition-colors">Standings</a>
+      <a href="#how-it-works" class="nav-link text-white/60 hover:text-white text-sm font-medium transition-colors">How It Works</a>
     </div>
+
+    <div class="flex items-center gap-3">
+      <!-- DOWNLOAD BUTTON (desktop) triggers modal -->
+      <button onclick="openModal()" class="hidden md:block bg-lime text-pitch px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-white transition-colors">
+        Download App
+      </button>
+      <button onclick="document.getElementById('mobile-menu').classList.toggle('open')" class="md:hidden text-white p-2 text-xl">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="md:hidden bg-pitch border-t border-white/10 px-6 py-4 space-y-4">
+    <a href="#features" class="block text-white/70 font-medium">Features</a>
+    <a href="#standings" class="block text-white/70 font-medium">Standings</a>
+    <a href="#how-it-works" class="block text-white/70 font-medium">How It Works</a>
+    <!-- mobile download triggers modal -->
+    <button onclick="openModal()" class="block bg-lime text-pitch text-center py-3 rounded-lg font-bold mt-2 w-full">Download App</button>
+  </div>
 </nav>
 
-
-<!-- ═══════════════════════════════════════════════
-     HERO
-═══════════════════════════════════════════════ -->
-<header class="bg-pitch flex flex-col relative overflow-hidden pt-20">
-
-    <!-- Giant background number — the signature element -->
-    <div class="absolute inset-0 flex items-center justify-end pointer-events-none select-none overflow-hidden">
-        <span class="font-display text-[28rem] md:text-[38rem] leading-none text-white/[0.03] translate-x-16">90</span>
+<!-- MODAL (Android only) with CTA -->
+<div id="downloadModal" class="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <div class="modal-icon">
+      <i class="fab fa-android"></i>
     </div>
-
-    <!-- Ambient glows -->
-    <div class="absolute top-1/3 left-1/4 w-96 h-96 bg-lime/10 rounded-full blur-[120px] pointer-events-none"></div>
-    <div class="absolute bottom-0 right-1/3 w-64 h-64 bg-lime/5 rounded-full blur-[80px] pointer-events-none"></div>
-
-    <div class="max-w-7xl mx-auto px-6 md:px-10 w-full relative z-10 py-14">
-        <div class="grid md:grid-cols-2 gap-16 items-center">
-            <!-- Left: Copy -->
-            <div>
-
-                <h1 class="font-display text-[5rem] md:text-[7rem] leading-[0.9] text-white mb-8 tracking-wide">
-                    RUN <br/>
-                    <span class="text-lime">YOUR</span><br/>
-                    LEAGUE.
-                </h1>
-
-                <p class="text-white/50 text-lg leading-relaxed mb-10 max-w-md">
-                    The tournament manager built for people who play, not people who admin. Brackets, standings, and stats handled in seconds.
-                </p>
-
-                <div class="flex flex-wrap gap-4">
-                    <a href="#download" class="glow-btn bg-lime text-pitch px-8 py-4 rounded-xl font-bold text-base inline-flex items-center gap-2 group">
-                        Start Free
-                        <i class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
-                    </a>
-                    <button class="text-white/60 hover:text-white border border-white/10 hover:border-white/30 px-8 py-4 rounded-xl font-medium text-base transition-all flex items-center gap-2">
-                        <i class="fas fa-play text-lime text-base"></i>
-                        See It In Action
-                    </button>
-                </div>
-            </div>
-
-            <!-- Right: Live score card -->
-            <div class="hidden md:block">
-                <div class="bg-card rounded-2xl border border-white/[0.08] overflow-hidden shadow-2xl">
-                    <!-- Matchday header -->
-                    <div class="px-6 py-4 flex items-center justify-between border-b border-white/[0.06]">
-                        <div class="flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-lime animate-pulse"></span>
-                            <span class="text-white/40 text-xs font-semibold uppercase tracking-widest">Matchweek 12</span>
-                        </div>
-                        <span class="text-lime text-xs font-bold bg-lime/10 px-3 py-1 rounded-full">Live</span>
-                    </div>
-
-                    <!-- Score display -->
-                    <div class="px-8 py-8">
-                        <div class="flex items-center justify-between gap-6">
-                            <div class="flex-1 text-center">
-                                <div class="w-14 h-14 bg-blue-500 rounded-2xl mx-auto mb-3 flex items-center justify-center text-white font-bold text-lg">RD</div>
-                                <div class="text-white font-semibold text-sm">Red Dragons</div>
-                                <div class="text-white/30 text-xs mt-1">Home</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="font-display text-7xl text-white tracking-wider leading-none">3<span class="text-white/20 mx-2">:</span>1</div>
-                                <div class="text-white/30 text-xs mt-2 font-medium">72'</div>
-                            </div>
-                            <div class="flex-1 text-center">
-                                <div class="w-14 h-14 bg-red-500 rounded-2xl mx-auto mb-3 flex items-center justify-center text-white font-bold text-lg">BK</div>
-                                <div class="text-white font-semibold text-sm">Blue Knights</div>
-                                <div class="text-white/30 text-xs mt-1">Away</div>
-                            </div>
-                        </div>
-
-                        <!-- Goal events -->
-                        <div class="mt-6 pt-6 border-t border-white/[0.06] space-y-3">
-                            <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-xs">
-                                <div class="flex justify-end items-center gap-2 text-white/60">
-                                    <i class="fas fa-futbol text-lime text-[10px]"></i>
-                                    <span>Marcus J. <span class="text-white/30">(Red Dragons)</span></span>
-                                </div>
-                                <div class="text-white/30 text-center">23'</div>
-                                <div></div>
-                            </div>
-                            <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-xs">
-                                <div class="flex justify-end items-center gap-2 text-white/60">
-                                    <i class="fas fa-futbol text-lime text-[10px]"></i>
-                                    <span>David K. <span class="text-white/30">(Red Dragons)</span></span>
-                                </div>
-                                <div class="text-white/30 text-center">41'</div>
-                                <div></div>
-                            </div>
-                            <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-xs">
-                                <div></div>
-                                <div class="text-white/30 text-center">56'</div>
-                                <div class="flex justify-start items-center gap-2 text-white/60">
-                                    <i class="fas fa-futbol text-white text-[10px]"></i>
-                                    <span>S. Miller <span class="text-white">(Blue Knights)</span></span>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-xs">
-                                <div class="flex justify-end items-center gap-2 text-white/60">
-                                    <i class="fas fa-futbol text-lime text-[10px]"></i>
-                                    <span>Marcus J. <span class="text-white/30">(Red Dragons)</span></span>
-                                </div>
-                                <div class="text-white/30 text-center">68'</div>
-                                <div></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bottom stat bar -->
-                    <div class="px-6 py-4 bg-white/[0.02] border-t border-white/[0.06] grid grid-cols-3 gap-4 text-center">
-                        <div>
-                            <div class="font-display text-xl text-lime">62%</div>
-                            <div class="text-white/30 text-[10px] uppercase tracking-wider mt-0.5">Possession</div>
-                        </div>
-                        <div>
-                            <div class="font-display text-xl text-white">7</div>
-                            <div class="text-white/30 text-[10px] uppercase tracking-wider mt-0.5">Shots</div>
-                        </div>
-                        <div>
-                            <div class="font-display text-xl text-white">2</div>
-                            <div class="text-white/30 text-[10px] uppercase tracking-wider mt-0.5">Yellow</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <span class="modal-badge">Available now</span>
+    <div class="modal-title">Android Only</div>
+    <p class="modal-sub">
+      The Kickoff app is currently available exclusively for <strong style="color:#C8F135;">Android</strong> devices. 
+      iOS support is coming soon — stay tuned!
+    </p>
+    <div class="modal-buttons">
+      <a href="https://github.com/Bankole614/kickoff/releases/download/v1.0.0/kickoff.apk" target="_blank" rel="noopener noreferrer" class="modal-btn-primary">
+        <i class="fas fa-download"></i> Download for Android
+      </a>
+      <button class="modal-btn-secondary" onclick="closeModal()">Not now</button>
     </div>
-
-    <!-- Stat bar at bottom of hero -->
-    <!-- <div class="relative z-10 bg-lime/[0.06] border-t border-lime/10 py-6 mt-4">
-        <div class="max-w-7xl mx-auto px-6 md:px-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div>
-                <div class="font-display text-3xl text-lime">5K+</div>
-                <div class="text-white/30 text-xs uppercase tracking-widest mt-1">Organizers</div>
-            </div>
-            <div>
-                <div class="font-display text-3xl text-white">48K</div>
-                <div class="text-white/30 text-xs uppercase tracking-widest mt-1">Matches Played</div>
-            </div>
-            <div class="hidden md:block">
-                <div class="font-display text-3xl text-white">120K</div>
-                <div class="text-white/30 text-xs uppercase tracking-widest mt-1">Players Registered</div>
-            </div>
-            <div class="hidden md:block">
-                <div class="font-display text-3xl text-white">99%</div>
-                <div class="text-white/30 text-xs uppercase tracking-widest mt-1">Uptime</div>
-            </div>
-        </div>
-    </div> -->
-</header>
-
-<!-- Ticker strip -->
-<div class="bg-lime py-3 overflow-hidden">
-    <div class="ticker-inner">
-        <span class="inline-flex items-center gap-8 pr-8 text-pitch font-bold text-sm uppercase tracking-widest">
-            <span><i class="fas fa-futbol"></i> Auto Standings</span><span class="opacity-30">—</span>
-            <span><i class="fas fa-trophy"></i> Tournament Brackets</span><span class="opacity-30">—</span>
-            <span><i class="fas fa-chart-line"></i> Player Stats</span><span class="opacity-30">—</span>
-            <span><i class="fas fa-shuffle"></i> Smart Squad Shuffle</span><span class="opacity-30">—</span>
-            <span><i class="fas fa-mobile"></i> Mobile Ready</span><span class="opacity-30">—</span>
-            <span><i class="fas fa-cloud"></i> Cloud Synced</span><span class="opacity-30">—</span>
-            <span><i class="fas fa-bolt"></i> Real-time Updates</span><span class="opacity-30">—</span>
-            <span><i class="fas fa-bullseye"></i> Custom Seeding</span><span class="opacity-30">—</span>
-        </span>
-        <span class="inline-flex items-center gap-8 pr-8 text-pitch font-bold text-sm uppercase tracking-widest" aria-hidden="true">
-            <span><i class="fas fa-futbol"></i> Auto Standings</span><span class="opacity-30">—</span>
-            <span><i class="fas fa-trophy"></i> Tournament Brackets</span><span class="opacity-30">—</span>
-            <span><i class="fas fa-chart-line"></i> Player Stats</span><span class="opacity-30">—</span>
-            <span><i class="fas fa-shuffle"></i> Smart Squad Shuffle</span><span class="opacity-30">—</span>
-            <span><i class="fas fa-mobile"></i> Mobile Ready</span><span class="opacity-30">—</span>
-            <span><i class="fas fa-cloud"></i> Cloud Synced</span><span class="opacity-30">—</span>
-            <span><i class="fas fa-bolt"></i> Real-time Updates</span><span class="opacity-30">—</span>
-            <span><i class="fas fa-bullseye"></i> Custom Seeding</span><span class="opacity-30">—</span>
-        </span>
-    </div>
+  </div>
 </div>
 
+<!-- HERO -->
+<header class="bg-pitch flex flex-col relative overflow-hidden pt-20">
+  <div class="absolute inset-0 flex items-center justify-end pointer-events-none select-none overflow-hidden">
+    <span class="font-display text-[28rem] md:text-[38rem] leading-none text-white/[0.03] translate-x-16">90</span>
+  </div>
+  <div class="absolute top-1/3 left-1/4 w-96 h-96 bg-lime/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute bottom-0 right-1/3 w-64 h-64 bg-lime/5 rounded-full blur-[80px] pointer-events-none"></div>
 
-<!-- ═══════════════════════════════════════════════
-     STANDINGS DASHBOARD
-═══════════════════════════════════════════════ -->
+  <div class="max-w-7xl mx-auto px-6 md:px-10 w-full relative z-10 py-14">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+      <div>
+        <h1 class="font-display text-[5rem] md:text-[7rem] leading-[0.9] text-white mb-8 tracking-wide hero-title">
+          RUN <br/>
+          <span class="text-lime">YOUR</span><br/>
+          LEAGUE.
+        </h1>
+        <p class="text-white/50 text-lg leading-relaxed mb-10 max-w-md">
+          The tournament manager built for people who play, not people who admin. Brackets, standings, and stats handled in seconds.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <!-- Download trigger (Start Free) -->
+          <button onclick="openModal()" class="glow-btn bg-lime text-pitch px-8 py-4 rounded-xl font-bold text-base inline-flex items-center gap-2 group">
+            Start Free
+            <i class="fas fa-arrow-right text-sm group-hover:translate-x-1 transition-transform"></i>
+          </button>
+          <button class="text-white/60 hover:text-white border border-white/10 hover:border-white/30 px-8 py-4 rounded-xl font-medium text-base transition-all flex items-center gap-2">
+            <i class="fas fa-play text-lime text-base"></i>
+            See It In Action
+          </button>
+        </div>
+      </div>
+
+      <div class="hidden md:block">
+        <div class="bg-card rounded-2xl border border-white/[0.08] overflow-hidden shadow-2xl">
+          <div class="px-6 py-4 flex items-center justify-between border-b border-white/[0.06]">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-lime animate-pulse"></span>
+              <span class="text-white/40 text-xs font-semibold uppercase tracking-widest">Matchweek 12</span>
+            </div>
+            <span class="text-lime text-xs font-bold bg-lime/10 px-3 py-1 rounded-full">Live</span>
+          </div>
+          <div class="px-8 py-8">
+            <div class="flex items-center justify-between gap-6">
+              <div class="flex-1 text-center">
+                <div class="w-14 h-14 bg-blue-500 rounded-2xl mx-auto mb-3 flex items-center justify-center text-white font-bold text-lg">RD</div>
+                <div class="text-white font-semibold text-sm">Red Dragons</div>
+                <div class="text-white/30 text-xs mt-1">Home</div>
+              </div>
+              <div class="text-center">
+                <div class="font-display text-7xl text-white tracking-wider leading-none">3<span class="text-white/20 mx-2">:</span>1</div>
+                <div class="text-white/30 text-xs mt-2 font-medium">72'</div>
+              </div>
+              <div class="flex-1 text-center">
+                <div class="w-14 h-14 bg-red-500 rounded-2xl mx-auto mb-3 flex items-center justify-center text-white font-bold text-lg">BK</div>
+                <div class="text-white font-semibold text-sm">Blue Knights</div>
+                <div class="text-white/30 text-xs mt-1">Away</div>
+              </div>
+            </div>
+            <div class="mt-6 pt-6 border-t border-white/[0.06] space-y-3">
+              <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-xs">
+                <div class="flex justify-end items-center gap-2 text-white/60"><i class="fas fa-futbol text-lime text-[10px]"></i><span>Marcus J. <span class="text-white/30">(Red Dragons)</span></span></div>
+                <div class="text-white/30 text-center">23'</div><div></div>
+              </div>
+              <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-xs">
+                <div class="flex justify-end items-center gap-2 text-white/60"><i class="fas fa-futbol text-lime text-[10px]"></i><span>David K. <span class="text-white/30">(Red Dragons)</span></span></div>
+                <div class="text-white/30 text-center">41'</div><div></div>
+              </div>
+              <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-xs">
+                <div></div>
+                <div class="text-white/30 text-center">56'</div>
+                <div class="flex justify-start items-center gap-2 text-white/60"><i class="fas fa-futbol text-white text-[10px]"></i><span>S. Miller <span class="text-white">(Blue Knights)</span></span></div>
+              </div>
+              <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-xs">
+                <div class="flex justify-end items-center gap-2 text-white/60"><i class="fas fa-futbol text-lime text-[10px]"></i><span>Marcus J. <span class="text-white/30">(Red Dragons)</span></span></div>
+                <div class="text-white/30 text-center">68'</div><div></div>
+              </div>
+            </div>
+          </div>
+          <div class="px-6 py-4 bg-white/[0.02] border-t border-white/[0.06] grid grid-cols-3 gap-4 text-center">
+            <div><div class="font-display text-xl text-lime">62%</div><div class="text-white/30 text-[10px] uppercase tracking-wider mt-0.5">Possession</div></div>
+            <div><div class="font-display text-xl text-white">7</div><div class="text-white/30 text-[10px] uppercase tracking-wider mt-0.5">Shots</div></div>
+            <div><div class="font-display text-xl text-white">2</div><div class="text-white/30 text-[10px] uppercase tracking-wider mt-0.5">Yellow</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Ticker -->
+<div class="bg-lime py-3 overflow-hidden">
+  <div class="ticker-inner">
+    <span class="inline-flex items-center gap-8 pr-8 text-pitch font-bold text-sm uppercase tracking-widest">
+      <span><i class="fas fa-futbol"></i> Auto Standings</span><span class="opacity-30">—</span>
+      <span><i class="fas fa-trophy"></i> Tournament Brackets</span><span class="opacity-30">—</span>
+      <span><i class="fas fa-chart-line"></i> Player Stats</span><span class="opacity-30">—</span>
+      <span><i class="fas fa-shuffle"></i> Smart Squad Shuffle</span><span class="opacity-30">—</span>
+      <span><i class="fas fa-mobile"></i> Mobile Ready</span><span class="opacity-30">—</span>
+      <span><i class="fas fa-cloud"></i> Cloud Synced</span><span class="opacity-30">—</span>
+      <span><i class="fas fa-bolt"></i> Real-time Updates</span><span class="opacity-30">—</span>
+      <span><i class="fas fa-bullseye"></i> Custom Seeding</span><span class="opacity-30">—</span>
+    </span>
+    <span class="inline-flex items-center gap-8 pr-8 text-pitch font-bold text-sm uppercase tracking-widest" aria-hidden="true">
+      <span><i class="fas fa-futbol"></i> Auto Standings</span><span class="opacity-30">—</span>
+      <span><i class="fas fa-trophy"></i> Tournament Brackets</span><span class="opacity-30">—</span>
+      <span><i class="fas fa-chart-line"></i> Player Stats</span><span class="opacity-30">—</span>
+      <span><i class="fas fa-shuffle"></i> Smart Squad Shuffle</span><span class="opacity-30">—</span>
+      <span><i class="fas fa-mobile"></i> Mobile Ready</span><span class="opacity-30">—</span>
+      <span><i class="fas fa-cloud"></i> Cloud Synced</span><span class="opacity-30">—</span>
+      <span><i class="fas fa-bolt"></i> Real-time Updates</span><span class="opacity-30">—</span>
+      <span><i class="fas fa-bullseye"></i> Custom Seeding</span><span class="opacity-30">—</span>
+    </span>
+  </div>
+</div>
+
+<!-- STANDINGS -->
 <section id="standings" class="py-14 px-6 md:px-10 bg-field">
-    <div class="max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row justify-between items-start md:center mb-16 gap-6">
-            <div>
-                <span class="text-lime bg-pitch text-xs font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-md">Live Dashboard</span>
-                <h2 class="font-display text-5xl md:text-7xl mt-4 text-pitch leading-none">LEAGUE STANDINGS</h2>
-            </div>
-            <p class="text-muted text-base max-w-xs leading-relaxed">Updated automatically after every match result. No manual entry, no spreadsheets.</p>
-        </div>
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 gap-6">
+      <div>
+        <span class="text-lime bg-pitch text-xs font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-md">Live Dashboard</span>
+        <h2 class="font-display text-5xl md:text-7xl mt-4 text-pitch leading-none">LEAGUE STANDINGS</h2>
+      </div>
+      <p class="text-muted text-base max-w-xs leading-relaxed">Updated automatically after every match result. No manual entry, no spreadsheets.</p>
+    </div>
 
-        <!-- Table card -->
-        <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-black/[0.06]">
-            <!-- Compact top bar -->
-            <div class="px-8 py-5 border-b border-black/[0.06] flex items-center gap-4 justify-between">
+    <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-black/[0.06]">
+      <div class="px-6 md:px-8 py-5 border-b border-black/[0.06] flex flex-wrap items-center gap-4 justify-between">
+        <div class="flex items-center gap-3">
+          <span class="w-2 h-2 rounded-full bg-lime animate-pulse"></span>
+          <span class="font-semibold text-sm text-pitch/60">Premier 5-a-Side League</span>
+          <span class="text-pitch/20">·</span>
+          <span class="text-pitch/40 text-sm hidden sm:inline">Matchweek 12 of 18</span>
+        </div>
+        <span class="text-xs font-bold text-lime bg-pitch px-3 py-1 rounded-full uppercase tracking-wide">Season Active</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[640px]">
+          <thead>
+            <tr class="bg-pitch/[0.02] border-b border-black/[0.04]">
+              <th class="pl-4 md:pl-8 pr-4 py-4 text-left text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">Pos</th>
+              <th class="px-4 py-4 text-left text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">Club</th>
+              <th class="px-4 py-4 text-center text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">P</th>
+              <th class="px-4 py-4 text-center text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">W</th>
+              <th class="px-4 py-4 text-center text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">D</th>
+              <th class="px-4 py-4 text-center text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">L</th>
+              <th class="px-4 py-4 text-center text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">GD</th>
+              <th class="px-4 py-4 text-center text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">Pts</th>
+              <th class="px-4 py-4 text-left text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">Form</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-black/[0.04]">
+            <tr class="table-row">
+              <td class="pl-4 md:pl-8 pr-4 py-5">
+                <div class="flex items-center gap-2">
+                  <div class="w-1 h-8 bg-lime rounded-full"></div>
+                  <span class="font-display text-2xl text-pitch leading-none">01</span>
+                </div>
+              </td>
+              <td class="px-4 py-5">
                 <div class="flex items-center gap-3">
-                    <span class="w-2 h-2 rounded-full bg-lime animate-pulse"></span>
-                    <span class="font-semibold text-sm text-pitch/60">Premier 5-a-Side League</span>
-                    <span class="text-pitch/20">·</span>
-                    <span class="text-pitch/40 text-sm">Matchweek 12 of 18</span>
+                  <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm">RD</div>
+                  <div>
+                    <div class="font-bold text-pitch text-sm">Red Dragons</div>
+                    <div class="text-pitch/30 text-xs">East Division</div>
+                  </div>
                 </div>
-                <span class="text-xs font-bold text-lime bg-pitch px-3 py-1 rounded-full uppercase tracking-wide">Season Active</span>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead>
-                        <tr class="bg-pitch/[0.02] border-b border-black/[0.04]">
-                            <th class="pl-8 pr-4 py-4 text-left text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">Pos</th>
-                            <th class="px-4 py-4 text-left text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">Club</th>
-                            <th class="px-4 py-4 text-center text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">P</th>
-                            <th class="px-4 py-4 text-center text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">W</th>
-                            <th class="px-4 py-4 text-center text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">D</th>
-                            <th class="px-4 py-4 text-center text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">L</th>
-                            <th class="px-4 py-4 text-center text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">GD</th>
-                            <th class="px-4 py-4 text-center text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">Pts</th>
-                            <th class="px-4 py-4 text-left text-[10px] font-bold uppercase tracking-[0.15em] text-pitch/40">Form</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-black/[0.04]">
-                        <!-- Row 1 -->
-                        <tr class="table-row">
-                            <td class="pl-8 pr-4 py-5">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-1 h-8 bg-lime rounded-full"></div>
-                                    <span class="font-display text-2xl text-pitch leading-none">01</span>
-                                </div>
-                            </td>
-                            <td class="px-4 py-5">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm">RD</div>
-                                    <div>
-                                        <div class="font-bold text-pitch text-sm">Red Dragons</div>
-                                        <div class="text-pitch/30 text-xs">East Division</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">12</td>
-                            <td class="px-4 py-5 text-center font-bold text-pitch text-sm">9</td>
-                            <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">2</td>
-                            <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">1</td>
-                            <td class="px-4 py-5 text-center font-bold text-emerald-600 text-sm">+18</td>
-                            <td class="px-4 py-5 text-center">
-                                <span class="bg-pitch text-lime font-display text-xl px-4 py-1 rounded-lg">29</span>
-                            </td>
-                            <td class="px-4 py-5">
-                                <div class="flex gap-1">
-                                    <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
-                                    <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
-                                    <span class="w-6 h-6 rounded-md bg-amber-400 text-white text-[9px] font-bold flex items-center justify-center">D</span>
-                                    <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
-                                    <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- Row 2 -->
-                        <tr class="table-row">
-                            <td class="pl-8 pr-4 py-5">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-1 h-8 bg-blue-500 rounded-full"></div>
-                                    <span class="font-display text-2xl text-pitch/40 leading-none">02</span>
-                                </div>
-                            </td>
-                            <td class="px-4 py-5">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm">BK</div>
-                                    <div>
-                                        <div class="font-bold text-pitch text-sm">Blue Knights</div>
-                                        <div class="text-pitch/30 text-xs">West Division</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">12</td>
-                            <td class="px-4 py-5 text-center font-bold text-pitch text-sm">8</td>
-                            <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">2</td>
-                            <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">2</td>
-                            <td class="px-4 py-5 text-center font-bold text-emerald-600 text-sm">+9</td>
-                            <td class="px-4 py-5 text-center">
-                                <span class="bg-pitch/5 text-pitch font-display text-xl px-4 py-1 rounded-lg">26</span>
-                            </td>
-                            <td class="px-4 py-5">
-                                <div class="flex gap-1">
-                                    <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
-                                    <span class="w-6 h-6 rounded-md bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">L</span>
-                                    <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
-                                    <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
-                                    <span class="w-6 h-6 rounded-md bg-amber-400 text-white text-[9px] font-bold flex items-center justify-center">D</span>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- Row 3 -->
-                        <tr class="table-row">
-                            <td class="pl-8 pr-4 py-5">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-1 h-8 bg-purple-500 rounded-full"></div>
-                                    <span class="font-display text-2xl text-pitch/40 leading-none">03</span>
-                                </div>
-                            </td>
-                            <td class="px-4 py-5">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm">TW</div>
-                                    <div>
-                                        <div class="font-bold text-pitch text-sm">Titan Warriors</div>
-                                        <div class="text-pitch/30 text-xs">North Division</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">12</td>
-                            <td class="px-4 py-5 text-center font-bold text-pitch text-sm">6</td>
-                            <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">2</td>
-                            <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">4</td>
-                            <td class="px-4 py-5 text-center font-bold text-pitch/40 text-sm">+2</td>
-                            <td class="px-4 py-5 text-center">
-                                <span class="bg-pitch/5 text-pitch font-display text-xl px-4 py-1 rounded-lg">20</span>
-                            </td>
-                            <td class="px-4 py-5">
-                                <div class="flex gap-1">
-                                    <span class="w-6 h-6 rounded-md bg-amber-400 text-white text-[9px] font-bold flex items-center justify-center">D</span>
-                                    <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
-                                    <span class="w-6 h-6 rounded-md bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">L</span>
-                                    <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
-                                    <span class="w-6 h-6 rounded-md bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">L</span>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- Row 4 - relegation zone -->
-                        <tr class="table-row bg-red-50/50">
-                            <td class="pl-8 pr-4 py-5">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-1 h-8 bg-red-400 rounded-full"></div>
-                                    <span class="font-display text-2xl text-pitch/40 leading-none">04</span>
-                                </div>
-                            </td>
-                            <td class="px-4 py-5">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm">DS</div>
-                                    <div>
-                                        <div class="font-bold text-pitch text-sm">Desert Storm</div>
-                                        <div class="text-red-400 text-xs font-medium">Relegation Zone</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">12</td>
-                            <td class="px-4 py-5 text-center font-bold text-pitch text-sm">3</td>
-                            <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">1</td>
-                            <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">8</td>
-                            <td class="px-4 py-5 text-center font-bold text-red-500 text-sm">-12</td>
-                            <td class="px-4 py-5 text-center">
-                                <span class="bg-red-50 text-red-500 font-display text-xl px-4 py-1 rounded-lg">10</span>
-                            </td>
-                            <td class="px-4 py-5">
-                                <div class="flex gap-1">
-                                    <span class="w-6 h-6 rounded-md bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">L</span>
-                                    <span class="w-6 h-6 rounded-md bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">L</span>
-                                    <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
-                                    <span class="w-6 h-6 rounded-md bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">L</span>
-                                    <span class="w-6 h-6 rounded-md bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">L</span>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Quick result entry at bottom -->
-            <div class="px-8 py-6 border-t border-black/[0.06] bg-pitch/[0.02]">
-                <div class="flex flex-col md:flex-row items-center gap-6 justify-between">
-                    <div>
-                        <div class="text-xs font-bold uppercase tracking-widest text-pitch/40 mb-1">Quick Result Entry</div>
-                        <div class="text-sm text-pitch/60">Score is auto-saved and standings update instantly.</div>
-                    </div>
-                    <div class="flex items-center gap-4">
-                        <div class="text-center">
-                            <div class="w-10 h-10 bg-blue-600 rounded-xl mx-auto mb-2 flex items-center justify-center text-white text-xs font-bold">RD</div>
-                            <div class="text-xs font-medium text-pitch/60">Red Dragons</div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <input type="number" value="3" min="0" class="w-14 h-14 text-center font-display text-3xl bg-white border-2 border-black/10 rounded-xl focus:border-lime transition-colors">
-                            <span class="font-display text-2xl text-pitch/20">:</span>
-                            <input type="number" value="1" min="0" class="w-14 h-14 text-center font-display text-3xl bg-white border-2 border-black/10 rounded-xl focus:border-lime transition-colors">
-                        </div>
-                        <div class="text-center">
-                            <div class="w-10 h-10 bg-indigo-500 rounded-xl mx-auto mb-2 flex items-center justify-center text-white text-xs font-bold">BK</div>
-                            <div class="text-xs font-medium text-pitch/60">Blue Knights</div>
-                        </div>
-                        <button class="bg-pitch text-lime font-bold px-6 py-3 rounded-xl hover:bg-pitch/80 transition-colors text-sm ml-2">
-                            Save Result
-                        </button>
-                    </div>
+              </td>
+              <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">12</td>
+              <td class="px-4 py-5 text-center font-bold text-pitch text-sm">9</td>
+              <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">2</td>
+              <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">1</td>
+              <td class="px-4 py-5 text-center font-bold text-emerald-600 text-sm">+18</td>
+              <td class="px-4 py-5 text-center"><span class="bg-pitch text-lime font-display text-xl px-4 py-1 rounded-lg">29</span></td>
+              <td class="px-4 py-5">
+                <div class="flex gap-1">
+                  <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
+                  <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
+                  <span class="w-6 h-6 rounded-md bg-amber-400 text-white text-[9px] font-bold flex items-center justify-center">D</span>
+                  <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
+                  <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
                 </div>
+              </td>
+            </tr>
+            <tr class="table-row">
+              <td class="pl-4 md:pl-8 pr-4 py-5">
+                <div class="flex items-center gap-2">
+                  <div class="w-1 h-8 bg-blue-500 rounded-full"></div>
+                  <span class="font-display text-2xl text-pitch/40 leading-none">02</span>
+                </div>
+              </td>
+              <td class="px-4 py-5">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm">BK</div>
+                  <div>
+                    <div class="font-bold text-pitch text-sm">Blue Knights</div>
+                    <div class="text-pitch/30 text-xs">West Division</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">12</td>
+              <td class="px-4 py-5 text-center font-bold text-pitch text-sm">8</td>
+              <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">2</td>
+              <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">2</td>
+              <td class="px-4 py-5 text-center font-bold text-emerald-600 text-sm">+9</td>
+              <td class="px-4 py-5 text-center"><span class="bg-pitch/5 text-pitch font-display text-xl px-4 py-1 rounded-lg">26</span></td>
+              <td class="px-4 py-5">
+                <div class="flex gap-1">
+                  <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
+                  <span class="w-6 h-6 rounded-md bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">L</span>
+                  <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
+                  <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
+                  <span class="w-6 h-6 rounded-md bg-amber-400 text-white text-[9px] font-bold flex items-center justify-center">D</span>
+                </div>
+              </td>
+            </tr>
+            <tr class="table-row">
+              <td class="pl-4 md:pl-8 pr-4 py-5">
+                <div class="flex items-center gap-2">
+                  <div class="w-1 h-8 bg-purple-500 rounded-full"></div>
+                  <span class="font-display text-2xl text-pitch/40 leading-none">03</span>
+                </div>
+              </td>
+              <td class="px-4 py-5">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm">TW</div>
+                  <div>
+                    <div class="font-bold text-pitch text-sm">Titan Warriors</div>
+                    <div class="text-pitch/30 text-xs">North Division</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">12</td>
+              <td class="px-4 py-5 text-center font-bold text-pitch text-sm">6</td>
+              <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">2</td>
+              <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">4</td>
+              <td class="px-4 py-5 text-center font-bold text-pitch/40 text-sm">+2</td>
+              <td class="px-4 py-5 text-center"><span class="bg-pitch/5 text-pitch font-display text-xl px-4 py-1 rounded-lg">20</span></td>
+              <td class="px-4 py-5">
+                <div class="flex gap-1">
+                  <span class="w-6 h-6 rounded-md bg-amber-400 text-white text-[9px] font-bold flex items-center justify-center">D</span>
+                  <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
+                  <span class="w-6 h-6 rounded-md bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">L</span>
+                  <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
+                  <span class="w-6 h-6 rounded-md bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">L</span>
+                </div>
+              </td>
+            </tr>
+            <tr class="table-row bg-red-50/50">
+              <td class="pl-4 md:pl-8 pr-4 py-5">
+                <div class="flex items-center gap-2">
+                  <div class="w-1 h-8 bg-red-400 rounded-full"></div>
+                  <span class="font-display text-2xl text-pitch/40 leading-none">04</span>
+                </div>
+              </td>
+              <td class="px-4 py-5">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-sm">DS</div>
+                  <div>
+                    <div class="font-bold text-pitch text-sm">Desert Storm</div>
+                    <div class="text-red-400 text-xs font-medium">Relegation Zone</div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">12</td>
+              <td class="px-4 py-5 text-center font-bold text-pitch text-sm">3</td>
+              <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">1</td>
+              <td class="px-4 py-5 text-center font-medium text-pitch/60 text-sm">8</td>
+              <td class="px-4 py-5 text-center font-bold text-red-500 text-sm">-12</td>
+              <td class="px-4 py-5 text-center"><span class="bg-red-50 text-red-500 font-display text-xl px-4 py-1 rounded-lg">10</span></td>
+              <td class="px-4 py-5">
+                <div class="flex gap-1">
+                  <span class="w-6 h-6 rounded-md bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">L</span>
+                  <span class="w-6 h-6 rounded-md bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">L</span>
+                  <span class="w-6 h-6 rounded-md bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center">W</span>
+                  <span class="w-6 h-6 rounded-md bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">L</span>
+                  <span class="w-6 h-6 rounded-md bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">L</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="px-6 md:px-8 py-6 border-t border-black/[0.06] bg-pitch/[0.02]">
+        <div class="flex flex-col lg:flex-row items-center gap-6 justify-between">
+          <div>
+            <div class="text-xs font-bold uppercase tracking-widest text-pitch/40 mb-1">Quick Result Entry</div>
+            <div class="text-sm text-pitch/60">Score is auto-saved and standings update instantly.</div>
+          </div>
+          <div class="flex flex-wrap items-center gap-4 justify-center">
+            <div class="text-center">
+              <div class="w-10 h-10 bg-blue-600 rounded-xl mx-auto mb-2 flex items-center justify-center text-white text-xs font-bold">RD</div>
+              <div class="text-xs font-medium text-pitch/60">Red Dragons</div>
             </div>
+            <div class="flex items-center gap-3">
+              <input type="number" value="3" min="0" class="w-14 h-14 text-center font-display text-3xl bg-white border-2 border-black/10 rounded-xl focus:border-lime transition-colors">
+              <span class="font-display text-2xl text-pitch/20">:</span>
+              <input type="number" value="1" min="0" class="w-14 h-14 text-center font-display text-3xl bg-white border-2 border-black/10 rounded-xl focus:border-lime transition-colors">
+            </div>
+            <div class="text-center">
+              <div class="w-10 h-10 bg-indigo-500 rounded-xl mx-auto mb-2 flex items-center justify-center text-white text-xs font-bold">BK</div>
+              <div class="text-xs font-medium text-pitch/60">Blue Knights</div>
+            </div>
+            <button class="bg-pitch text-lime font-bold px-6 py-3 rounded-xl hover:bg-pitch/80 transition-colors text-sm">Save Result</button>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════════════
-     FEATURES GRID — dark bg
-═══════════════════════════════════════════════ -->
+<!-- FEATURES -->
 <section id="features" class="bg-pitch py-14 px-6 md:px-10">
-    <div class="max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row justify-between items-center mb-16 gap-6">
-            <div>
-                <span class="text-lime text-xs font-bold uppercase tracking-[0.2em]">Everything You Need</span>
-                <h2 class="font-display text-5xl md:text-7xl text-white mt-3 leading-none">POWERFUL TOOLS</h2>
-            </div>
-            <p class="text-white/30 text-base max-w-xs leading-relaxed">Professional-grade features without the enterprise price tag or the learning curve.</p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-4">
-            <!-- Card 1 -->
-            <div class="feature-card bg-card rounded-2xl p-8 border border-white/[0.06] group">
-                <div class="w-12 h-12 rounded-xl bg-lime/10 flex items-center justify-center mb-6 group-hover:bg-lime transition-colors duration-300 text-lime group-hover:text-pitch text-xl">
-                    <i class="fas fa-layer-group"></i>
-                </div>
-                <h3 class="font-bold text-white text-lg mb-3">Multi-Format Engine</h3>
-                <p class="text-white/40 text-sm leading-relaxed">Round Robin, Single Elimination, Group Stage. Every format supported. Brackets auto-generate as soon as teams are set.</p>
-                <div class="mt-6 flex gap-2 flex-wrap">
-                    <span class="text-[10px] font-bold uppercase tracking-wider bg-white/5 text-white/40 px-2 py-1 rounded">Round Robin</span>
-                    <span class="text-[10px] font-bold uppercase tracking-wider bg-white/5 text-white/40 px-2 py-1 rounded">Knockout</span>
-                    <span class="text-[10px] font-bold uppercase tracking-wider bg-white/5 text-white/40 px-2 py-1 rounded">Group Stage</span>
-                </div>
-            </div>
-
-            <!-- Card 2 — featured, taller -->
-            <div class="feature-card bg-lime rounded-2xl p-8 group md:row-span-1">
-                <div class="w-12 h-12 rounded-xl bg-pitch/10 flex items-center justify-center mb-6 text-pitch text-xl">
-                    <i class="fas fa-people-group"></i>
-                </div>
-                <h3 class="font-bold text-pitch text-lg mb-3">Smart Squad Builder</h3>
-                <p class="text-pitch/60 text-sm leading-relaxed">Add players. Hit shuffle. Get perfectly balanced teams. Or go manual with our drag-and-drop draft room. Your call.</p>
-                <!-- Mini visual -->
-                <div class="mt-6 bg-pitch/10 rounded-xl p-4 space-y-2">
-                    <div class="flex items-center gap-2 bg-white/40 rounded-lg px-3 py-2">
-                        <div class="w-6 h-6 rounded-full bg-blue-500 text-[8px] text-white flex items-center justify-center font-bold">MJ</div>
-                        <span class="text-pitch text-xs font-medium flex-1">Marcus J.</span>
-                        <span class="text-[9px] font-bold text-blue-600 bg-blue-100 px-2 py-0.5 rounded">Team A</span>
-                    </div>
-                    <div class="flex items-center gap-2 bg-white/40 rounded-lg px-3 py-2">
-                        <div class="w-6 h-6 rounded-full bg-red-500 text-[8px] text-white flex items-center justify-center font-bold">SK</div>
-                        <span class="text-pitch text-xs font-medium flex-1">Sarah K.</span>
-                        <span class="text-[9px] font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded">Team B</span>
-                    </div>
-                    <div class="flex items-center gap-2 bg-white/20 border border-dashed border-pitch/20 rounded-lg px-3 py-2">
-                        <div class="w-6 h-6 rounded-full bg-pitch/10 text-[8px] text-pitch/30 flex items-center justify-center">+</div>
-                        <span class="text-pitch/40 text-xs italic">Unassigned…</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="feature-card bg-card rounded-2xl p-8 border border-white/[0.06] group">
-                <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 group-hover:bg-lime/10 transition-colors duration-300 text-white/40 group-hover:text-lime text-xl">
-                    <i class="fas fa-chart-column"></i>
-                </div>
-                <h3 class="font-bold text-white text-lg mb-3">Comprehensive Stats</h3>
-                <p class="text-white/40 text-sm leading-relaxed">Golden Boot races, clean sheet records, assists. Every stat you care about, tracked automatically and stored in the cloud forever.</p>
-                <!-- Mini stats -->
-                <div class="mt-6 space-y-3">
-                    <div class="flex justify-between items-center">
-                        <span class="text-white/30 text-xs">Goals Scored</span>
-                        <div class="flex items-center gap-2">
-                            <div class="w-20 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                                <div class="h-full bg-lime rounded-full" style="width:80%"></div>
-                            </div>
-                            <span class="text-lime text-xs font-bold">12</span>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-white/30 text-xs">Assists</span>
-                        <div class="flex items-center gap-2">
-                            <div class="w-20 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                                <div class="h-full bg-white/40 rounded-full" style="width:50%"></div>
-                            </div>
-                            <span class="text-white/40 text-xs font-bold">7</span>
-                        </div>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-white/30 text-xs">Clean Sheets</span>
-                        <div class="flex items-center gap-2">
-                            <div class="w-20 h-1.5 bg-white/10 rounded-full overflow-hidden">
-                                <div class="h-full bg-white/40 rounded-full" style="width:33%"></div>
-                            </div>
-                            <span class="text-white/40 text-xs font-bold">4</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row justify-between items-center mb-16 gap-6">
+      <div>
+        <span class="text-lime text-xs font-bold uppercase tracking-[0.2em]">Everything You Need</span>
+        <h2 class="font-display text-5xl md:text-7xl text-white mt-3 leading-none">POWERFUL TOOLS</h2>
+      </div>
+      <p class="text-white/30 text-base max-w-xs leading-relaxed">Professional-grade features without the enterprise price tag or the learning curve.</p>
     </div>
+
+    <div class="grid md:grid-cols-3 gap-4">
+      <div class="feature-card bg-card rounded-2xl p-8 border border-white/[0.06] group">
+        <div class="w-12 h-12 rounded-xl bg-lime/10 flex items-center justify-center mb-6 group-hover:bg-lime transition-colors duration-300 text-lime group-hover:text-pitch text-xl">
+          <i class="fas fa-layer-group"></i>
+        </div>
+        <h3 class="font-bold text-white text-lg mb-3">Multi-Format Engine</h3>
+        <p class="text-white/40 text-sm leading-relaxed">Round Robin, Single Elimination, Group Stage. Every format supported. Brackets auto-generate as soon as teams are set.</p>
+        <div class="mt-6 flex gap-2 flex-wrap">
+          <span class="text-[10px] font-bold uppercase tracking-wider bg-white/5 text-white/40 px-2 py-1 rounded">Round Robin</span>
+          <span class="text-[10px] font-bold uppercase tracking-wider bg-white/5 text-white/40 px-2 py-1 rounded">Knockout</span>
+          <span class="text-[10px] font-bold uppercase tracking-wider bg-white/5 text-white/40 px-2 py-1 rounded">Group Stage</span>
+        </div>
+      </div>
+
+      <div class="feature-card bg-lime rounded-2xl p-8 group md:row-span-1">
+        <div class="w-12 h-12 rounded-xl bg-pitch/10 flex items-center justify-center mb-6 text-pitch text-xl">
+          <i class="fas fa-people-group"></i>
+        </div>
+        <h3 class="font-bold text-pitch text-lg mb-3">Smart Squad Builder</h3>
+        <p class="text-pitch/60 text-sm leading-relaxed">Add players. Hit shuffle. Get perfectly balanced teams. Or go manual with our drag-and-drop draft room. Your call.</p>
+        <div class="mt-6 bg-pitch/10 rounded-xl p-4 space-y-2">
+          <div class="flex items-center gap-2 bg-white/40 rounded-lg px-3 py-2">
+            <div class="w-6 h-6 rounded-full bg-blue-500 text-[8px] text-white flex items-center justify-center font-bold">MJ</div>
+            <span class="text-pitch text-xs font-medium flex-1">Marcus J.</span>
+            <span class="text-[9px] font-bold text-blue-600 bg-blue-100 px-2 py-0.5 rounded">Team A</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white/40 rounded-lg px-3 py-2">
+            <div class="w-6 h-6 rounded-full bg-red-500 text-[8px] text-white flex items-center justify-center font-bold">SK</div>
+            <span class="text-pitch text-xs font-medium flex-1">Sarah K.</span>
+            <span class="text-[9px] font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded">Team B</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white/20 border border-dashed border-pitch/20 rounded-lg px-3 py-2">
+            <div class="w-6 h-6 rounded-full bg-pitch/10 text-[8px] text-pitch/30 flex items-center justify-center">+</div>
+            <span class="text-pitch/40 text-xs italic">Unassigned…</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-card bg-card rounded-2xl p-8 border border-white/[0.06] group">
+        <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mb-6 group-hover:bg-lime/10 transition-colors duration-300 text-white/40 group-hover:text-lime text-xl">
+          <i class="fas fa-chart-column"></i>
+        </div>
+        <h3 class="font-bold text-white text-lg mb-3">Comprehensive Stats</h3>
+        <p class="text-white/40 text-sm leading-relaxed">Golden Boot races, clean sheet records, assists. Every stat you care about, tracked automatically and stored in the cloud forever.</p>
+        <div class="mt-6 space-y-3">
+          <div class="flex justify-between items-center">
+            <span class="text-white/30 text-xs">Goals Scored</span>
+            <div class="flex items-center gap-2">
+              <div class="w-20 h-1.5 bg-white/10 rounded-full overflow-hidden"><div class="h-full bg-lime rounded-full" style="width:80%"></div></div>
+              <span class="text-lime text-xs font-bold">12</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-white/30 text-xs">Assists</span>
+            <div class="flex items-center gap-2">
+              <div class="w-20 h-1.5 bg-white/10 rounded-full overflow-hidden"><div class="h-full bg-white/40 rounded-full" style="width:50%"></div></div>
+              <span class="text-white/40 text-xs font-bold">7</span>
+            </div>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-white/30 text-xs">Clean Sheets</span>
+            <div class="flex items-center gap-2">
+              <div class="w-20 h-1.5 bg-white/10 rounded-full overflow-hidden"><div class="h-full bg-white/40 rounded-full" style="width:33%"></div></div>
+              <span class="text-white/40 text-xs font-bold">4</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════════════
-     BRACKET SECTION
-═══════════════════════════════════════════════ -->
+<!-- BRACKET -->
 <section class="py-14 px-6 md:px-10 bg-field">
-    <div class="max-w-7xl mx-auto">
-        <div class="grid md:grid-cols-2 gap-16 items-center">
-            <!-- Copy -->
-            <div>
-                <span class="text-lime bg-pitch text-xs font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-md">Auto-Generated</span>
-                <h2 class="font-display text-5xl md:text-6xl mt-4 mb-6 text-pitch leading-none">BRACKET<br/>BUILDER</h2>
-                <p class="text-muted text-lg leading-relaxed mb-8">Say goodbye to whiteboard brackets. Kickoff generates tournament draws the instant you set your team list — and updates them live as results come in.</p>
-                <ul class="space-y-3 mb-10">
-                    <li class="flex items-center gap-3 text-pitch/70 font-medium text-sm">
-                        <div class="w-5 h-5 bg-lime rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-pitch text-xs"></i>
-                        </div>
-                        Single & Double Elimination
-                    </li>
-                    <li class="flex items-center gap-3 text-pitch/70 font-medium text-sm">
-                        <div class="w-5 h-5 bg-lime rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-pitch text-xs"></i>
-                        </div>
-                        Third-place Playoff Support
-                    </li>
-                    <li class="flex items-center gap-3 text-pitch/70 font-medium text-sm">
-                        <div class="w-5 h-5 bg-lime rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-pitch text-xs"></i>
-                        </div>
-                        Custom Seeding & Bye Management
-                    </li>
-                    <li class="flex items-center gap-3 text-pitch/70 font-medium text-sm">
-                        <div class="w-5 h-5 bg-lime rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check text-pitch text-xs"></i>
-                        </div>
-                        Shareable Public Bracket Link
-                    </li>
-                </ul>
-            </div>
+  <div class="max-w-7xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+      <div>
+        <span class="text-lime bg-pitch text-xs font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-md">Auto-Generated</span>
+        <h2 class="font-display text-5xl md:text-6xl mt-4 mb-6 text-pitch leading-none">BRACKET<br/>BUILDER</h2>
+        <p class="text-muted text-lg leading-relaxed mb-8">Say goodbye to whiteboard brackets. Kickoff generates tournament draws the instant you set your team list — and updates them live as results come in.</p>
+        <ul class="space-y-3 mb-10">
+          <li class="flex items-center gap-3 text-pitch/70 font-medium text-sm">
+            <div class="w-5 h-5 bg-lime rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-pitch text-xs"></i></div> Single & Double Elimination
+          </li>
+          <li class="flex items-center gap-3 text-pitch/70 font-medium text-sm">
+            <div class="w-5 h-5 bg-lime rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-pitch text-xs"></i></div> Third-place Playoff Support
+          </li>
+          <li class="flex items-center gap-3 text-pitch/70 font-medium text-sm">
+            <div class="w-5 h-5 bg-lime rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-pitch text-xs"></i></div> Custom Seeding & Bye Management
+          </li>
+          <li class="flex items-center gap-3 text-pitch/70 font-medium text-sm">
+            <div class="w-5 h-5 bg-lime rounded-full flex items-center justify-center flex-shrink-0"><i class="fas fa-check text-pitch text-xs"></i></div> Shareable Public Bracket Link
+          </li>
+        </ul>
+      </div>
 
-            <!-- Bracket visual -->
-            <div class="bg-pitch rounded-2xl p-8 shadow-2xl">
-                <div class="flex items-center justify-between mb-6">
-                    <span class="text-white/40 text-xs uppercase tracking-widest font-bold">Knockout Stage</span>
-                    <span class="text-lime text-xs font-bold bg-lime/10 px-2 py-1 rounded">Semi-Finals Done</span>
-                </div>
-
-                <div class="flex gap-6 items-center">
-                    <!-- Round 1 -->
-                    <div class="flex-1 space-y-4">
-                        <div class="text-[9px] uppercase tracking-widest text-white/20 font-bold mb-3">Semi-Finals</div>
-                        <div class="space-y-1.5">
-                            <div class="bg-lime/10 border border-lime/20 rounded-lg px-3 py-2.5 flex justify-between items-center">
-                                <span class="text-white text-xs font-bold">Striker FC</span>
-                                <span class="font-display text-lg text-lime">2</span>
-                            </div>
-                            <div class="bg-white/5 rounded-lg px-3 py-2.5 flex justify-between items-center opacity-40">
-                                <span class="text-white text-xs font-medium">Desert Storm</span>
-                                <span class="font-display text-lg text-white/40">1</span>
-                            </div>
-                        </div>
-                        <div class="h-4"></div>
-                        <div class="space-y-1.5">
-                            <div class="bg-lime/10 border border-lime/20 rounded-lg px-3 py-2.5 flex justify-between items-center">
-                                <span class="text-white text-xs font-bold">Thunder Kings</span>
-                                <span class="font-display text-lg text-lime">3</span>
-                            </div>
-                            <div class="bg-white/5 rounded-lg px-3 py-2.5 flex justify-between items-center opacity-40">
-                                <span class="text-white text-xs font-medium">Ocean XI</span>
-                                <span class="font-display text-lg text-white/40">0</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Arrow -->
-                    <div class="flex flex-col items-center gap-1 text-lime/40 text-lg">
-                        <i class="fas fa-arrow-right"></i>
-                    </div>
-
-                    <!-- Final -->
-                    <div class="flex-1">
-                        <div class="text-[9px] uppercase tracking-widest text-white/20 font-bold mb-3">Final</div>
-                        <div class="bg-lime rounded-xl p-4 text-center shadow-lg shadow-lime/20">
-                            <div class="text-[9px] uppercase tracking-widest text-pitch/50 font-bold mb-2"><i class="fas fa-trophy"></i> Champion</div>
-                            <div class="font-display text-pitch text-xl leading-tight">Thunder<br/>Kings</div>
-                            <div class="mt-2 text-pitch/50 text-[10px] font-bold">3 – 1 · Final</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="bg-pitch rounded-2xl p-6 md:p-8 shadow-2xl">
+        <div class="flex items-center justify-between mb-6">
+          <span class="text-white/40 text-xs uppercase tracking-widest font-bold">Knockout Stage</span>
+          <span class="text-lime text-xs font-bold bg-lime/10 px-2 py-1 rounded">Semi-Finals Done</span>
         </div>
+        <div class="flex gap-4 md:gap-6 items-center flex-wrap md:flex-nowrap">
+          <div class="flex-1 space-y-4 min-w-[140px]">
+            <div class="text-[9px] uppercase tracking-widest text-white/20 font-bold mb-3">Semi-Finals</div>
+            <div class="space-y-1.5">
+              <div class="bg-lime/10 border border-lime/20 rounded-lg px-3 py-2.5 flex justify-between items-center">
+                <span class="text-white text-xs font-bold">Striker FC</span>
+                <span class="font-display text-lg text-lime">2</span>
+              </div>
+              <div class="bg-white/5 rounded-lg px-3 py-2.5 flex justify-between items-center opacity-40">
+                <span class="text-white text-xs font-medium">Desert Storm</span>
+                <span class="font-display text-lg text-white/40">1</span>
+              </div>
+            </div>
+            <div class="h-4"></div>
+            <div class="space-y-1.5">
+              <div class="bg-lime/10 border border-lime/20 rounded-lg px-3 py-2.5 flex justify-between items-center">
+                <span class="text-white text-xs font-bold">Thunder Kings</span>
+                <span class="font-display text-lg text-lime">3</span>
+              </div>
+              <div class="bg-white/5 rounded-lg px-3 py-2.5 flex justify-between items-center opacity-40">
+                <span class="text-white text-xs font-medium">Ocean XI</span>
+                <span class="font-display text-lg text-white/40">0</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col items-center gap-1 text-lime/40 text-lg hidden sm:flex">
+            <i class="fas fa-arrow-right"></i>
+          </div>
+          <div class="flex-1 min-w-[120px]">
+            <div class="text-[9px] uppercase tracking-widest text-white/20 font-bold mb-3">Final</div>
+            <div class="bg-lime rounded-xl p-4 text-center shadow-lg shadow-lime/20">
+              <div class="text-[9px] uppercase tracking-widest text-pitch/50 font-bold mb-2"><i class="fas fa-trophy"></i> Champion</div>
+              <div class="font-display text-pitch text-xl leading-tight">Thunder<br/>Kings</div>
+              <div class="mt-2 text-pitch/50 text-[10px] font-bold">3 – 1 · Final</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════════════
-     HOW IT WORKS
-═══════════════════════════════════════════════ -->
+<!-- HOW IT WORKS -->
 <section id="how-it-works" class="bg-pitch py-14 px-6 md:px-10">
-    <div class="max-w-7xl mx-auto">
-        <div class="text-center mb-20">
-            <span class="text-lime text-xs font-bold uppercase tracking-[0.2em]">The Process</span>
-            <h2 class="font-display text-5xl md:text-7xl text-white mt-3 leading-none">THREE STEPS<br/>TO KICK OFF</h2>
-        </div>
-
-        <!-- App mockup + steps layout -->
-        <div class="grid md:grid-cols-2 gap-16 items-start mb-16">
-            <!-- Steps -->
-            <div class="space-y-10">
-                <div class="bg-card rounded-2xl p-8 border border-white/[0.06] relative overflow-hidden group feature-card">
-                    <span class="step-num">01</span>
-                    <div class="relative z-10">
-                        <div class="w-10 h-10 rounded-xl bg-lime flex items-center justify-center mb-6 text-pitch text-lg">
-                            <i class="fas fa-sliders"></i>
-                        </div>
-                        <h3 class="font-bold text-white text-lg mb-3">Define Your Format</h3>
-                        <p class="text-white/40 text-sm leading-relaxed">Pick your tournament type, set team sizes, and configure match rules in under two minutes.</p>
-                    </div>
-                </div>
-                <div class="bg-card rounded-2xl p-8 border border-white/[0.06] relative overflow-hidden group feature-card">
-                    <span class="step-num">02</span>
-                    <div class="relative z-10">
-                        <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center mb-6 group-hover:bg-lime transition-colors text-white group-hover:text-pitch text-lg">
-                            <i class="fas fa-user-group"></i>
-                        </div>
-                        <h3 class="font-bold text-white text-lg mb-3">Invite &amp; Group Players</h3>
-                        <p class="text-white/40 text-sm leading-relaxed">Type in names or share a link. Our smart shuffle creates balanced teams automatically, or draft manually.</p>
-                    </div>
-                </div>
-                <div class="bg-card rounded-2xl p-8 border border-white/[0.06] relative overflow-hidden group feature-card">
-                    <span class="step-num">03</span>
-                    <div class="relative z-10">
-                        <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center mb-6 group-hover:bg-lime transition-colors text-white group-hover:text-pitch text-lg">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <h3 class="font-bold text-white text-lg mb-3">Manage &amp; Update</h3>
-                        <p class="text-white/40 text-sm leading-relaxed">Enter scores, update tables, and share live results. Everything propagates across the platform instantly.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- App mockup -->
-            <div class="flex justify-center md:justify-end sticky top-28">
-                <div class="relative">
-                    <div class="bg-pitch w-72 h-[580px] rounded-[3rem] border-[8px] border-white/10 relative overflow-hidden shadow-2xl ring-1 ring-white/5">
-                        <!-- Notch -->
-                        <div class="absolute top-0 w-full h-7 flex justify-center items-center z-10">
-                            <div class="w-20 h-5 bg-black rounded-b-2xl"></div>
-                        </div>
-                        <!-- App header -->
-                        <div class="bg-lime h-48 w-full p-8 flex flex-col justify-end pt-10">
-                            <div class="text-pitch/50 text-xs font-bold uppercase tracking-widest mb-1">New Tournament</div>
-                            <h3 class="text-pitch text-2xl font-bold leading-tight">Configure<br/>Settings</h3>
-                        </div>
-                        <!-- App body -->
-                        <div class="p-5 space-y-3 bg-[#111] h-full">
-                            <div class="bg-white/5 border border-white/[0.08] p-4 rounded-2xl">
-                                <div class="h-3 w-1/3 bg-white/10 rounded mb-3"></div>
-                                <div class="h-9 w-full bg-white/5 rounded-lg border border-white/[0.06]"></div>
-                            </div>
-                            <div class="bg-white/5 border border-white/[0.08] p-4 rounded-2xl">
-                                <div class="h-3 w-1/2 bg-white/10 rounded mb-3"></div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <div class="h-11 bg-lime/20 border border-lime/30 rounded-xl flex items-center justify-center">
-                                        <span class="text-lime text-[10px] font-bold uppercase tracking-wide">League</span>
-                                    </div>
-                                    <div class="h-11 bg-white/5 rounded-xl flex items-center justify-center">
-                                        <span class="text-white/30 text-[10px] font-bold uppercase tracking-wide">Knockout</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bg-white/5 border border-white/[0.08] p-4 rounded-2xl">
-                                <div class="h-3 w-2/5 bg-white/10 rounded mb-3"></div>
-                                <div class="grid grid-cols-3 gap-1.5">
-                                    <div class="h-9 bg-white/5 rounded-lg flex items-center justify-center text-white/20 text-xs">4v4</div>
-                                    <div class="h-9 bg-lime/20 border border-lime/30 rounded-lg flex items-center justify-center text-lime text-xs font-bold">5v5</div>
-                                    <div class="h-9 bg-white/5 rounded-lg flex items-center justify-center text-white/20 text-xs">7v7</div>
-                                </div>
-                            </div>
-                            <div class="bg-lime h-12 w-full rounded-2xl flex items-center justify-center text-pitch font-bold text-sm mt-2">Continue →</div>
-                        </div>
-                    </div>
-                    <!-- Glow behind phone -->
-                    <div class="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-lime/20 rounded-full blur-[60px]"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- OLD step cards removed, now inline above -->
-        <div class="grid md:grid-cols-3 gap-6 hidden">
-            <!-- Step 1 -->
-            <div class="bg-card rounded-2xl p-8 border border-white/[0.06] relative overflow-hidden group feature-card">
-                <span class="step-num">01</span>
-                <div class="relative z-10">
-                    <div class="w-10 h-10 rounded-xl bg-lime flex items-center justify-center mb-6">
-                        <svg class="w-5 h-5 text-pitch" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
-                        </svg>
-                    </div>
-                    <h3 class="font-bold text-white text-lg mb-3">Define Your Format</h3>
-                    <p class="text-white/40 text-sm leading-relaxed">Pick your tournament type, set team sizes, and configure match rules in under two minutes.</p>
-                </div>
-            </div>
-
-            <!-- Step 2 -->
-            <div class="bg-card rounded-2xl p-8 border border-white/[0.06] relative overflow-hidden group feature-card md:translate-y-4">
-                <span class="step-num">02</span>
-                <div class="relative z-10">
-                    <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center mb-6 group-hover:bg-lime transition-colors">
-                        <svg class="w-5 h-5 text-white group-hover:text-pitch transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                    </div>
-                    <h3 class="font-bold text-white text-lg mb-3">Invite & Group Players</h3>
-                    <p class="text-white/40 text-sm leading-relaxed">Type in names or share a link. Our smart shuffle creates balanced teams automatically, or draft manually.</p>
-                </div>
-            </div>
-
-            <!-- Step 3 -->
-            <div class="bg-card rounded-2xl p-8 border border-white/[0.06] relative overflow-hidden group feature-card md:translate-y-8">
-                <span class="step-num">03</span>
-                <div class="relative z-10">
-                    <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center mb-6 group-hover:bg-lime transition-colors">
-                        <svg class="w-5 h-5 text-white group-hover:text-pitch transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                        </svg>
-                    </div>
-                    <h3 class="font-bold text-white text-lg mb-3">Manage & Update</h3>
-                    <p class="text-white/40 text-sm leading-relaxed">Enter scores, update tables, and share live results. Everything propagates across the platform instantly.</p>
-                </div>
-            </div>
-        </div>
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-16 md:mb-20">
+      <span class="text-lime text-xs font-bold uppercase tracking-[0.2em]">The Process</span>
+      <h2 class="font-display text-5xl md:text-7xl text-white mt-3 leading-none">THREE STEPS<br/>TO KICK OFF</h2>
     </div>
+
+    <div class="grid md:grid-cols-2 gap-16 items-start mb-16">
+      <div class="space-y-10">
+        <div class="bg-card rounded-2xl p-8 border border-white/[0.06] relative overflow-hidden group feature-card">
+          <span class="step-num">01</span>
+          <div class="relative z-10">
+            <div class="w-10 h-10 rounded-xl bg-lime flex items-center justify-center mb-6 text-pitch text-lg"><i class="fas fa-sliders"></i></div>
+            <h3 class="font-bold text-white text-lg mb-3">Define Your Format</h3>
+            <p class="text-white/40 text-sm leading-relaxed">Pick your tournament type, set team sizes, and configure match rules in under two minutes.</p>
+          </div>
+        </div>
+        <div class="bg-card rounded-2xl p-8 border border-white/[0.06] relative overflow-hidden group feature-card">
+          <span class="step-num">02</span>
+          <div class="relative z-10">
+            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center mb-6 group-hover:bg-lime transition-colors text-white group-hover:text-pitch text-lg"><i class="fas fa-user-group"></i></div>
+            <h3 class="font-bold text-white text-lg mb-3">Invite &amp; Group Players</h3>
+            <p class="text-white/40 text-sm leading-relaxed">Type in names or share a link. Our smart shuffle creates balanced teams automatically, or draft manually.</p>
+          </div>
+        </div>
+        <div class="bg-card rounded-2xl p-8 border border-white/[0.06] relative overflow-hidden group feature-card">
+          <span class="step-num">03</span>
+          <div class="relative z-10">
+            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center mb-6 group-hover:bg-lime transition-colors text-white group-hover:text-pitch text-lg"><i class="fas fa-bolt"></i></div>
+            <h3 class="font-bold text-white text-lg mb-3">Manage &amp; Update</h3>
+            <p class="text-white/40 text-sm leading-relaxed">Enter scores, update tables, and share live results. Everything propagates across the platform instantly.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-center md:justify-end sticky top-28">
+        <div class="relative">
+          <div class="bg-pitch w-72 h-[580px] rounded-[3rem] border-[8px] border-white/10 relative overflow-hidden shadow-2xl ring-1 ring-white/5">
+            <div class="absolute top-0 w-full h-7 flex justify-center items-center z-10">
+              <div class="w-20 h-5 bg-black rounded-b-2xl"></div>
+            </div>
+            <div class="bg-lime h-48 w-full p-8 flex flex-col justify-end pt-10">
+              <div class="text-pitch/50 text-xs font-bold uppercase tracking-widest mb-1">New Tournament</div>
+              <h3 class="text-pitch text-2xl font-bold leading-tight">Configure<br/>Settings</h3>
+            </div>
+            <div class="p-5 space-y-3 bg-[#111] h-full">
+              <div class="bg-white/5 border border-white/[0.08] p-4 rounded-2xl">
+                <div class="h-3 w-1/3 bg-white/10 rounded mb-3"></div>
+                <div class="h-9 w-full bg-white/5 rounded-lg border border-white/[0.06]"></div>
+              </div>
+              <div class="bg-white/5 border border-white/[0.08] p-4 rounded-2xl">
+                <div class="h-3 w-1/2 bg-white/10 rounded mb-3"></div>
+                <div class="grid grid-cols-2 gap-2">
+                  <div class="h-11 bg-lime/20 border border-lime/30 rounded-xl flex items-center justify-center"><span class="text-lime text-[10px] font-bold uppercase tracking-wide">League</span></div>
+                  <div class="h-11 bg-white/5 rounded-xl flex items-center justify-center"><span class="text-white/30 text-[10px] font-bold uppercase tracking-wide">Knockout</span></div>
+                </div>
+              </div>
+              <div class="bg-white/5 border border-white/[0.08] p-4 rounded-2xl">
+                <div class="h-3 w-2/5 bg-white/10 rounded mb-3"></div>
+                <div class="grid grid-cols-3 gap-1.5">
+                  <div class="h-9 bg-white/5 rounded-lg flex items-center justify-center text-white/20 text-xs">4v4</div>
+                  <div class="h-9 bg-lime/20 border border-lime/30 rounded-lg flex items-center justify-center text-lime text-xs font-bold">5v5</div>
+                  <div class="h-9 bg-white/5 rounded-lg flex items-center justify-center text-white/20 text-xs">7v7</div>
+                </div>
+              </div>
+              <div class="bg-lime h-12 w-full rounded-2xl flex items-center justify-center text-pitch font-bold text-sm mt-2">Continue →</div>
+            </div>
+          </div>
+          <div class="absolute -z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-lime/20 rounded-full blur-[60px]"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════════════
-     PRICING — commented out, activate later
-═══════════════════════════════════════════════ -->
-
-<section id="pricing" class="py-14 px-6 md:px-10 bg-field">
-    <div class="max-w-7xl mx-auto">
-        <div class="text-center mb-16">
-            <span class="text-lime bg-pitch text-xs font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-md">Pricing</span>
-            <h2 class="font-display text-5xl md:text-7xl mt-4 text-pitch leading-none">SIMPLE &<br/>TRANSPARENT</h2>
-            <p class="text-muted mt-4 text-base">No hidden fees. No annual lock-in. Cancel any time.</p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-6 items-start">
-            <!-- Starter -->
-            <div class="bg-white rounded-2xl p-8 border border-black/[0.06] shadow-sm">
-                <div class="mb-6">
-                    <div class="text-pitch/40 text-xs font-bold uppercase tracking-widest mb-2">Starter</div>
-                    <div class="flex items-end gap-1">
-                        <span class="font-display text-6xl text-pitch">$0</span>
-                        <span class="text-pitch/30 mb-2 text-sm">/forever</span>
-                    </div>
-                </div>
-                <div class="border-t border-black/[0.06] pt-6 space-y-3 mb-8">
-                    <div class="flex items-center gap-2 text-sm text-pitch/70"><span class="text-lime">✓</span> Up to 8 teams</div>
-                    <div class="flex items-center gap-2 text-sm text-pitch/70"><span class="text-lime">✓</span> League & Knockout formats</div>
-                    <div class="flex items-center gap-2 text-sm text-pitch/70"><span class="text-lime">✓</span> Basic stats</div>
-                    <div class="flex items-center gap-2 text-sm text-pitch/20"><span>✕</span> Custom branding</div>
-                    <div class="flex items-center gap-2 text-sm text-pitch/20"><span>✕</span> Advanced stats</div>
-                </div>
-                <button class="w-full py-3.5 rounded-xl border-2 border-pitch/10 text-pitch font-bold text-sm hover:border-pitch transition-colors">Get Started Free</button>
-            </div>
-
-            <!-- Pro — featured -->
-            <div class="pro-card bg-pitch rounded-2xl p-8 border border-lime/30 shadow-2xl relative">
-                <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-lime text-pitch px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest whitespace-nowrap">Most Popular</div>
-                <div class="mb-6">
-                    <div class="text-lime/60 text-xs font-bold uppercase tracking-widest mb-2">Pro Organizer</div>
-                    <div class="flex items-end gap-1">
-                        <span class="font-display text-6xl text-white">$19</span>
-                        <span class="text-white/30 mb-2 text-sm">/month</span>
-                    </div>
-                </div>
-                <div class="border-t border-white/10 pt-6 space-y-3 mb-8">
-                    <div class="flex items-center gap-2 text-sm text-white/70"><span class="text-lime">✓</span> Unlimited teams</div>
-                    <div class="flex items-center gap-2 text-sm text-white/70"><span class="text-lime">✓</span> All tournament formats</div>
-                    <div class="flex items-center gap-2 text-sm text-white/70"><span class="text-lime">✓</span> Advanced player stats</div>
-                    <div class="flex items-center gap-2 text-sm text-white/70"><span class="text-lime">✓</span> Custom branding & colors</div>
-                    <div class="flex items-center gap-2 text-sm text-white/70"><span class="text-lime">✓</span> Shareable bracket links</div>
-                </div>
-                <button class="glow-btn w-full py-3.5 rounded-xl bg-lime text-pitch font-bold text-sm">Go Pro Now</button>
-            </div>
-
-            <!-- League Master -->
-            <div class="bg-white rounded-2xl p-8 border border-black/[0.06] shadow-sm">
-                <div class="mb-6">
-                    <div class="text-pitch/40 text-xs font-bold uppercase tracking-widest mb-2">League Master</div>
-                    <div class="flex items-end gap-1">
-                        <span class="font-display text-6xl text-pitch">$49</span>
-                        <span class="text-pitch/30 mb-2 text-sm">/month</span>
-                    </div>
-                </div>
-                <div class="border-t border-black/[0.06] pt-6 space-y-3 mb-8">
-                    <div class="flex items-center gap-2 text-sm text-pitch/70"><span class="text-lime">✓</span> Everything in Pro</div>
-                    <div class="flex items-center gap-2 text-sm text-pitch/70"><span class="text-lime">✓</span> Multiple simultaneous leagues</div>
-                    <div class="flex items-center gap-2 text-sm text-pitch/70"><span class="text-lime">✓</span> API access</div>
-                    <div class="flex items-center gap-2 text-sm text-pitch/70"><span class="text-lime">✓</span> Priority support</div>
-                    <div class="flex items-center gap-2 text-sm text-pitch/70"><span class="text-lime">✓</span> White-label option</div>
-                </div>
-                <button class="w-full py-3.5 rounded-xl border-2 border-pitch/10 text-pitch font-bold text-sm hover:border-pitch transition-colors">Contact Sales</button>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-<!-- ═══════════════════════════════════════════════
-     ABOUT
-═══════════════════════════════════════════════ -->
+<!-- ABOUT -->
 <section id="about" class="py-14 px-6 md:px-10 bg-field">
-    <div class="max-w-7xl mx-auto">
-        <div class="grid md:grid-cols-2 gap-16 items-center">
-            <!-- Image -->
-            <div class="relative order-2 md:order-1">
-                <div class="absolute -top-4 -left-4 w-full h-full bg-lime/10 rounded-3xl -rotate-2 pointer-events-none"></div>
-                <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=800" alt="Soccer ball on grass" class="rounded-3xl shadow-xl relative z-10 w-full object-cover h-[420px]">
-                <!-- Floating stat chip -->
-                <div class="absolute bottom-6 right-6 z-20 bg-pitch text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
-                    <div class="w-8 h-8 bg-lime rounded-xl flex items-center justify-center text-pitch text-base">
-                        <i class="fas fa-futbol"></i>
-                    </div>
-                    <div>
-                        <div class="font-display  leading-none ">Let's get the</div>
-                        <div class=" text-lime uppercase tracking-wider">game started</div>
-                    </div>
-                </div>
-            </div>
-            <!-- Copy -->
-            <div class="order-1 md:order-2">
-                <span class="text-lime bg-pitch text-xs font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-md">Our Story</span>
-                <h2 class="font-display text-5xl md:text-6xl mt-4 mb-6 text-pitch leading-none">BUILT FOR<br/>THE GAME</h2>
-                <p class="text-muted text-base leading-relaxed mb-5">
-                    Kickoff was born out of a simple frustration: organising local soccer matches shouldn't require a spreadsheet degree. Manual brackets, WhatsApp score updates, and forgotten tallies — we've all been there.
-                </p>
-                <p class="text-muted text-base leading-relaxed mb-8">
-                    Whether you're running a weekend kickabout with friends or a competitive local league, our goal is to give you professional-grade tools that feel effortless to use. Get on the pitch. We'll handle the rest.
-                </p>
-            </div>
+  <div class="max-w-7xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+      <div class="relative order-2 md:order-1">
+        <div class="absolute -top-4 -left-4 w-full h-full bg-lime/10 rounded-3xl -rotate-2 pointer-events-none"></div>
+        <img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=800" alt="Soccer ball on grass" class="rounded-3xl shadow-xl relative z-10 w-full object-cover h-[420px]">
+        <div class="absolute bottom-6 right-6 z-20 bg-pitch text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+          <div class="w-8 h-8 bg-lime rounded-xl flex items-center justify-center text-pitch text-base"><i class="fas fa-futbol"></i></div>
+          <div><div class="font-display leading-none">Let's get the</div><div class="text-lime uppercase tracking-wider">game started</div></div>
         </div>
+      </div>
+      <div class="order-1 md:order-2">
+        <span class="text-lime bg-pitch text-xs font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-md">Our Story</span>
+        <h2 class="font-display text-5xl md:text-6xl mt-4 mb-6 text-pitch leading-none">BUILT FOR<br/>THE GAME</h2>
+        <p class="text-muted text-base leading-relaxed mb-5">
+          Kickoff was born out of a simple frustration: organising local soccer matches shouldn't require a spreadsheet degree. Manual brackets, WhatsApp score updates, and forgotten tallies — we've all been there.
+        </p>
+        <p class="text-muted text-base leading-relaxed mb-8">
+          Whether you're running a weekend kickabout with friends or a competitive local league, our goal is to give you professional-grade tools that feel effortless to use. Get on the pitch. We'll handle the rest.
+        </p>
+      </div>
     </div>
+  </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════════════
-     CTA — DOWNLOAD
-═══════════════════════════════════════════════ -->
+<!-- CTA DOWNLOAD -->
 <section id="download" class="bg-pitch py-14 px-6 md:px-10">
-    <div class="max-w-7xl mx-auto">
-        <div class="bg-lime rounded-2xl p-16 text-center relative overflow-hidden">
-            <!-- Decorative large text -->
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-                <span class="font-display text-[14rem] leading-none text-pitch/5">GO</span>
-            </div>
-            <div class="relative z-10">
-                <h2 class="font-display text-6xl md:text-8xl text-pitch leading-none mb-4">READY TO<br/>PLAY?</h2>
-                <p class="text-pitch/60 text-lg mb-10 max-w-md mx-auto leading-relaxed">Download Kickoff and run your first tournament in under five minutes. iOS and Android.</p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button class="bg-pitch text-white px-8 py-4 rounded-xl font-bold text-sm flex items-center justify-center gap-3 hover:bg-pitch/80 transition-colors">
-                        <i class="fab fa-apple text-base"></i>
-                        App Store
-                    </button>
-                    <button class="bg-white text-pitch px-8 py-4 rounded-xl font-bold text-sm flex items-center justify-center gap-3 hover:bg-white/80 transition-colors shadow-sm">
-                        <i class="fab fa-google-play text-base"></i>
-                        Google Play
-                    </button>
-                </div>
-            </div>
+  <div class="max-w-7xl mx-auto">
+    <div class="bg-lime rounded-2xl p-8 md:p-16 text-center relative overflow-hidden">
+      <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+        <span class="font-display text-[10rem] md:text-[14rem] leading-none text-pitch/5">GO</span>
+      </div>
+      <div class="relative z-10">
+        <h2 class="font-display text-5xl md:text-8xl text-pitch leading-none mb-4">READY TO<br/>PLAY?</h2>
+        <p class="text-pitch/60 text-lg mb-10 max-w-md mx-auto leading-relaxed">Download Kickoff and run your first tournament in under five minutes. iOS and Android.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <!-- Download button triggers modal -->
+          <button onclick="openModal()" class="bg-pitch text-white px-8 py-4 rounded-xl font-bold text-sm flex items-center justify-center gap-3 hover:bg-pitch/80 transition-colors">
+            <i class="fab fa-android text-base"></i> Download App
+          </button>
         </div>
+      </div>
     </div>
+  </div>
 </section>
 
-
-<!-- ═══════════════════════════════════════════════
-     FOOTER
-═══════════════════════════════════════════════ -->
+<!-- FOOTER -->
 <footer class="bg-pitch text-white pt-14 pb-8 px-6 md:px-10 border-t border-white/[0.06]">
-    <div class="max-w-7xl mx-auto">
-        <div class="grid md:grid-cols-4 gap-12 pb-12 border-b border-white/[0.06]">
-            <div class="md:col-span-1">
-                <div class="flex items-center gap-2 mb-4">
-                    <div class="w-7 h-7 bg-lime rounded-lg flex items-center justify-center text-pitch text-base">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <span class="font-display text-xl tracking-widest">KICKOFF</span>
-                </div>
-                <p class="text-white/30 text-sm leading-relaxed">The only tournament manager built for people who love the game, not the paperwork.</p>
-            </div>
-            <div>
-                <div class="text-white/20 text-[10px] font-bold uppercase tracking-[0.2em] mb-4">Product</div>
-                <ul class="space-y-3">
-                    <li><a href="#" class="text-white/40 hover:text-white text-sm transition-colors">Features</a></li>
-                    <li><a href="#" class="text-white/40 hover:text-white text-sm transition-colors">Pricing</a></li>
-                    <li><a href="#" class="text-white/40 hover:text-white text-sm transition-colors">Changelog</a></li>
-                </ul>
-            </div>
-            <div>
-                <div class="text-white/20 text-[10px] font-bold uppercase tracking-[0.2em] mb-4">Company</div>
-                <ul class="space-y-3">
-                    <li><a href="#" class="text-white/40 hover:text-white text-sm transition-colors">About</a></li>
-                    <li><a href="#" class="text-white/40 hover:text-white text-sm transition-colors">Careers</a></li>
-                    <li><a href="#" class="text-white/40 hover:text-white text-sm transition-colors">Contact</a></li>
-                </ul>
-            </div>
-            <div>
-                <div class="text-white/20 text-[10px] font-bold uppercase tracking-[0.2em] mb-4">Stay in the loop</div>
-                <div class="flex">
-                    <input type="email" placeholder="your@email.com" class="bg-white/5 border border-white/10 rounded-l-xl px-4 py-3 w-full text-sm text-white placeholder:text-white/20 focus:border-lime transition-colors">
-                    <button class="bg-lime px-4 py-3 rounded-r-xl hover:bg-white transition-colors text-pitch text-lg">
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
-                </div>
-            </div>
+  <div class="max-w-7xl mx-auto">
+    <div class="grid md:grid-cols-4 gap-12 pb-12 border-b border-white/[0.06]">
+      <div class="md:col-span-1">
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-7 h-7 bg-lime rounded-lg flex items-center justify-center text-pitch text-base"><i class="fas fa-bolt"></i></div>
+          <span class="font-display text-xl tracking-widest">KICKOFF</span>
         </div>
-        <div class="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-white/20 text-xs">
-            <span>&copy; 2025 Kickoff App. All rights reserved.</span>
-            <div class="flex gap-6">
-                <a href="#" class="hover:text-white transition-colors">Privacy</a>
-                <a href="#" class="hover:text-white transition-colors">Terms</a>
-                <a href="#" class="hover:text-white transition-colors">Cookies</a>
-            </div>
+        <p class="text-white/30 text-sm leading-relaxed">The only tournament manager built for people who love the game, not the paperwork.</p>
+      </div>
+      <div>
+        <div class="text-white/20 text-[10px] font-bold uppercase tracking-[0.2em] mb-4">Product</div>
+        <ul class="space-y-3">
+          <li><a href="#features" class="text-white/40 hover:text-white text-sm transition-colors">Features</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-sm transition-colors">Changelog</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="text-white/20 text-[10px] font-bold uppercase tracking-[0.2em] mb-4">Company</div>
+        <ul class="space-y-3">
+          <li><a href="#about" class="text-white/40 hover:text-white text-sm transition-colors">About</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-sm transition-colors">Careers</a></li>
+          <li><a href="#" class="text-white/40 hover:text-white text-sm transition-colors">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="text-white/20 text-[10px] font-bold uppercase tracking-[0.2em] mb-4">Stay in the loop</div>
+        <div class="flex">
+          <input type="email" placeholder="your@email.com" class="bg-white/5 border border-white/10 rounded-l-xl px-4 py-3 w-full text-sm text-white placeholder:text-white/20 focus:border-lime transition-colors">
+          <button class="bg-lime px-4 py-3 rounded-r-xl hover:bg-white transition-colors text-pitch text-lg"><i class="fas fa-arrow-right"></i></button>
         </div>
+      </div>
     </div>
+    <div class="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-white/20 text-xs">
+      <span>&copy; 2025 Kickoff App. All rights reserved.</span>
+      <div class="flex gap-6">
+        <a href="#" class="hover:text-white transition-colors">Privacy</a>
+        <a href="#" class="hover:text-white transition-colors">Terms</a>
+        <a href="#" class="hover:text-white transition-colors">Cookies</a>
+      </div>
+    </div>
+  </div>
 </footer>
 
+<script>
+  // Modal functions
+  function openModal() {
+    document.getElementById('downloadModal').classList.add('active');
+  }
+  function closeModal() {
+    document.getElementById('downloadModal').classList.remove('active');
+  }
+  // Close modal on backdrop click
+  document.getElementById('downloadModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  // Close modal with Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
 </body>
 </html>
